@@ -1,0 +1,82 @@
+data_6TR
+#
+_chem_comp.id 6TR
+_chem_comp.name 'PLP_pyruvic_acid_quinonoid'
+_chem_comp.type non-polymer
+_chem_comp.formula 'C11 H12 N2 O3'
+_chem_comp.mon_nstd_parent_comp_id ?
+_chem_comp.pdbx_synonyms ?
+_chem_comp.formula_weight 220.228
+#
+loop_
+_chem_comp_atom.comp_id
+_chem_comp_atom.atom_id
+_chem_comp_atom.type_symbol
+_chem_comp_atom.charge
+_chem_comp_atom.pdbx_leaving_atom_flag
+_chem_comp_atom.pdbx_model_Cartn_x_ideal
+_chem_comp_atom.pdbx_model_Cartn_y_ideal
+_chem_comp_atom.pdbx_model_Cartn_z_ideal
+6TR C0P C 0 N -8.473 8.462 -3.927
+6TR OCA O 0 N -8.287 9.357 -3.003
+6TR OCAH O 0 N -9.094 7.354 -3.646
+6TR C1P C 0 N -7.972 8.705 -5.311
+6TR C2P C 0 N -7.229 9.874 -5.925
+6TR HP2A H 0 N -6.263 9.558 -6.339
+6TR HP2B H 0 N -7.801 10.350 -6.729
+6TR HP2C H 0 N -7.033 10.629 -5.169
+6TR N1 N 0 N -8.966 4.359 -10.042
+6TR C2 C 0 N -9.338 4.288 -8.763
+6TR C2A C 0 N -10.135 3.088 -8.333
+6TR C3 C 0 N -8.982 5.309 -7.874
+6TR O3 O 0 N -9.343 5.273 -6.557
+6TR C4 C 0 N -8.261 6.434 -8.318
+6TR C4A C 0 N -7.941 7.558 -7.474
+6TR C5 C 0 N -7.870 6.469 -9.679
+6TR C5A C 0 N -7.051 7.637 -10.307
+6TR C6 C 0 N -8.254 5.403 -10.479
+6TR H1 H 0 N -9.215 3.612 -10.686
+6TR 1H2A H 0 N -9.475 2.265 -8.043
+6TR 2H2A H 0 N -10.804 3.300 -7.495
+6TR 3H2A H 0 N -10.759 2.765 -9.165
+6TR H4A H 0 N -7.370 8.371 -7.894
+6TR 1H5A H 0 N -6.982 8.374 -9.532
+6TR 2H5A H 0 N -6.161 7.211 -10.720
+6TR H6 H 0 N -7.990 5.392 -11.532
+6TR NIM N 0 N -8.244 7.654 -6.200
+6TR HIM H 0 N -8.844 6.909 -5.841
+#
+loop_
+_chem_comp_bond.atom_id_1
+_chem_comp_bond.atom_id_2
+_chem_comp_bond.value_order
+_chem_comp_bond.pdbx_aromatic_flag
+C0P OCA SING N
+C0P OCAH SING N
+C0P C1P SING N
+C1P C2P SING N
+C1P NIM SING N
+C2P HP2A SING N
+C2P HP2B SING N
+C2P HP2C SING N
+N1 C2 DOUB Y
+N1 C6 DOUB Y
+N1 H1 SING N
+C2 C2A SING N
+C2 C3 DOUB Y
+C2A 1H2A SING N
+C2A 2H2A SING N
+C2A 3H2A SING N
+C3 O3 DOUB N
+C3 C4 DOUB Y
+C4 C4A SING N
+C4 C5 DOUB Y
+C4A H4A SING N
+C4A NIM SING N
+C5 C5A SING N
+C5 C6 DOUB Y
+C5A 1H5A SING N
+C5A 2H5A SING N
+C6 H6 SING N
+NIM HIM SING N
+#
