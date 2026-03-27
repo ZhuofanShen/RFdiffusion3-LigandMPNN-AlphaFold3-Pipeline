@@ -1,0 +1,29 @@
+{
+    "length_100-200_exposed_Cys_subs": {
+      "input": "Cys_PLP_rot_0.pdb",
+      "length": "100-200",
+      "unindex": "A403",
+      "select_fixed_atoms": {"A403": "SG,CB,CA", "B200": "ALL"},
+      "ligand": "6TR",
+      "select_partially_buried": {"B200": "N1,C2,C2A,C6"},
+      "select_exposed": {"B200": "C5,C5A,C4,C4A,C3,O3,NIM,C1P,C2P,C0P,OCA,OCAH"}
+    },
+    "length_100-200_exposed_Me_OH_subs": {
+      "input": "Cys_PLP_rot_0.pdb",
+      "length": "100-200",
+      "unindex": "A403",
+      "select_fixed_atoms": {"A403": "SG,CB,CA", "B200": "ALL"},
+      "ligand": "6TR",
+      "select_partially_buried": {"B200": "N1,C5,C5A,C6"},
+      "select_exposed": {"B200": "C4,C4A,C3,C2,C2A,O3,NIM,C1P,C2P,C0P,OCA,OCAH"}
+    },
+    "length_100-200_exposed_Cys_Me_OH_subs": {
+      "input": "Cys_PLP_rot_0.pdb",
+      "length": "100-200",
+      "unindex": "A403",
+      "select_fixed_atoms": {"A403": "SG,CB,CA", "B200": "ALL"},
+      "ligand": "6TR",
+      "select_partially_buried": {"B200": "N1,C6"},
+      "select_exposed": {"B200": "C2,C2A,C5,C5A,C4,C4A,C3,O3,NIM,C1P,C2P,C0P,OCA,OCAH"}
+    }
+}
