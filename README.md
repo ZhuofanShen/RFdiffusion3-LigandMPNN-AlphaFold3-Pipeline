@@ -42,3 +42,10 @@ unset CUDA_VISIBLE_DEVICES
 
 docker run -it --gpus device=${i} --volume .:/work --volume /opt/alphafold3_weights:/root/models --volume /home/public_databases:/root/public_databases alphafold3 python run_alphafold.py --input_dir /work/inputs/Cys_PLP_rot_${i}_options_3_af3_jsons --model_dir /root/models --norun_data_pipeline --output_dir /work/outputs/Cys_PLP_options_3_AlphaFold3 --num_recycles 1 --num_diffusion_samples 1
 ```
+
+## Filter designs according to pLDDT, iPAE, and ipTM confidence scores
+
+Run the following command for rotamers 0-5 in separate tmux sessions/slurm jobs.
+```
+python scripts/collect_af3_results_two_state_best_seq.py -af3o "outputs/Cys_PLP_options_3_AlphaFold3" -w "Cys_PLP_rot_${i}_*_model_*" -o "outputs/Cys_PLP_rot_${i}_options_3_AlphaFold3_analysis"
+```
