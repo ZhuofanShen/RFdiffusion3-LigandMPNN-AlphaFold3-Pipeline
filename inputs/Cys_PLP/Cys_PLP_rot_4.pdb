@@ -1,0 +1,65 @@
+ATOM      1  N   CYS A 403      -8.475   8.694 -14.806  1.00  0.00      A    N  
+ATOM      2  CA  CYS A 403      -7.310   8.926 -13.939  1.00  0.00      A    C  
+ATOM      3  C   CYS A 403      -6.213   9.821 -14.570  1.00  0.00      A    C  
+ATOM      4  O   CYS A 403      -5.816  10.811 -13.970  1.00  0.00      A    O  
+ATOM      5  CB  CYS A 403      -6.695   7.629 -13.390  1.00  0.00      A    C  
+ATOM      6  SG  CYS A 403      -7.933   6.679 -12.417  1.00  0.00      A    S  
+TER   
+HETATM    7  C0P 6TR B 200      -8.270   7.312  -5.455  1.00  0.00      B    C  
+HETATM    8  OCA 6TR B 200      -8.052   8.380  -4.834  1.00  0.00      B    O  
+HETATM    9 OCAH 6TR B 200      -8.805   6.254  -5.046  1.00  0.00      B    O  
+HETATM   10  C1P 6TR B 200      -7.816   7.298  -6.918  1.00  0.00      B    C  
+HETATM   11  C2P 6TR B 200      -7.180   8.481  -7.558  1.00  0.00      B    C  
+HETATM   12 HP2A 6TR B 200      -6.174   8.246  -7.934  1.00  0.00      B    H  
+HETATM   13 HP2B 6TR B 200      -7.763   8.840  -8.417  1.00  0.00      B    H  
+HETATM   14 HP2C 6TR B 200      -7.110   9.273  -6.815  1.00  0.00      B    H  
+HETATM   15  N1  6TR B 200      -8.483   2.228 -10.717  1.00  0.00      B    N  
+HETATM   16  C2  6TR B 200      -8.876   2.390  -9.408  1.00  0.00      B    C  
+HETATM   17  C2A 6TR B 200      -9.566   1.241  -8.745  1.00  0.00      B    C  
+HETATM   18  C3  6TR B 200      -8.618   3.597  -8.729  1.00  0.00      B    C  
+HETATM   19  O3  6TR B 200      -8.956   3.765  -7.508  1.00  0.00      B    O  
+HETATM   20  C4  6TR B 200      -7.943   4.671  -9.490  1.00  0.00      B    C  
+HETATM   21  C4A 6TR B 200      -7.687   5.911  -8.898  1.00  0.00      B    C  
+HETATM   22  C5  6TR B 200      -7.548   4.400 -10.845  1.00  0.00      B    C  
+HETATM   23  C5A 6TR B 200      -6.800   5.399 -11.678  1.00  0.00      B    C  
+HETATM   24  C6  6TR B 200      -7.839   3.182 -11.419  1.00  0.00      B    C  
+HETATM   25  H1  6TR B 200      -8.683   1.348 -11.168  1.00  0.00      B    H  
+HETATM   26 1H2A 6TR B 200      -8.893   0.388  -8.588  1.00  0.00      B    H  
+HETATM   27 2H2A 6TR B 200      -9.922   1.573  -7.772  1.00  0.00      B    H  
+HETATM   28 3H2A 6TR B 200     -10.422   0.882  -9.330  1.00  0.00      B    H  
+HETATM   29  H4A 6TR B 200      -7.243   6.718  -9.461  1.00  0.00      B    H  
+HETATM   30 1H5A 6TR B 200      -6.046   5.926 -11.089  1.00  0.00      B    H  
+HETATM   31 2H5A 6TR B 200      -6.300   4.901 -12.510  1.00  0.00      B    H  
+HETATM   32  H6  6TR B 200      -7.567   2.934 -12.436  1.00  0.00      B    H  
+HETATM   33  NIM 6TR B 200      -8.005   6.189  -7.591  1.00  0.00      B    N  
+HETATM   34  HIM 6TR B 200      -8.461   5.388  -7.097  1.00  0.00      B    H  
+CONECT    6   23
+CONECT    7    8    9   10
+CONECT    8    7
+CONECT    9    7
+CONECT   10    7   11   33
+CONECT   11   10   12   13   14
+CONECT   12   11
+CONECT   13   11
+CONECT   14   11
+CONECT   15   16   24   25
+CONECT   16   15   17   18
+CONECT   17   16   26   27   28
+CONECT   18   16   19   20
+CONECT   19   18
+CONECT   20   18   21   22
+CONECT   21   20   29   33
+CONECT   22   20   23   24
+CONECT   23    6   22   30   31
+CONECT   24   15   22   32
+CONECT   25   15
+CONECT   26   17
+CONECT   27   17
+CONECT   28   17
+CONECT   29   21
+CONECT   30   23
+CONECT   31   23
+CONECT   32   24
+CONECT   33   10   21   34
+CONECT   34   33
+END
