@@ -53,7 +53,7 @@ def backbone_plddt_stats(conf_json: dict, atom_names: list):
     return frac_gt90, mean_bb
 
 
-def ligand_mean_plddt(conf_json: dict):
+def ligand_mean_plddt_stats(conf_json: dict):
     """
     Mean pLDDT for ligand atoms (chain B)
     """
@@ -395,7 +395,7 @@ def main():
                         mean_ipae_list.append(holo_metrics["mean_ipae"])
                         atom_names = get_atom_names(next(holo_model_x_dir.glob("*.cif")))
                         holo_frac_gt90_list.append(backbone_plddt_stats(holo_conf_json, atom_names)[0])
-                        ligand_mean_plddt_list.append(ligand_mean_plddt(holo_conf_json))
+                        ligand_mean_plddt_list.append(ligand_mean_plddt_stats(holo_conf_json))
                         holo_sum_conf = next(holo_model_x_dir.glob("*_summary_confidences.json"), None)
                         holo_summary_confidences = pass_summary_filters(load_af3_conf(holo_sum_conf),
                                                                     args.ptm_cut,
@@ -450,13 +450,13 @@ def main():
                     #     print(True)
                     # else:
                     #     print(False)
-                    # print("covalent_ligand_mean_plddt")
+                    # print("ligand_mean_plddt")
                     # print(min(ligand_mean_plddt_list))
                     # if min(ligand_mean_plddt_list) > args.ligand_mean_plddt_cut:
                     #     print(True)
                     # else:
                     #     print(False)
-                    # print("covalent_ligand_mean_ipae")
+                    # print("ligand_mean_ipae")
                     # print(max(mean_ipae_list))
                     # if holo_metrics["mean_ipae"] < args.mean_ipae_cut:
                     #     print(True)
