@@ -108,7 +108,7 @@ def parse_bond_pairs(mapping: dict, items: List[str]):
     return parsed
 
 
-def write_af3_json(out_json: Path, name: str, seq: str,
+def write_af3_json(out_json: Path, name: str, seqs: List[str],
                    model_seeds: list,
                    ccd_codes=None,
                    user_ccd=None,
@@ -120,13 +120,14 @@ def write_af3_json(out_json: Path, name: str, seq: str,
         "sequences": [
             {
                 "protein": {
-                    "id": "A",
+                    "id": chr(ord("A") + i),
                     "sequence": seq,
                     "unpairedMsa": "",
                     "pairedMsa": "",
                     "templates": []
                 }
             }
+            for i, seq in enumerate(seqs)
         ],
         "dialect": "alphafold3",
         "version": 4
@@ -134,7 +135,7 @@ def write_af3_json(out_json: Path, name: str, seq: str,
 
     if ccd_codes:
         payload["sequences"].append({
-            "ligand": {"id": "B", "ccdCodes": ccd_codes}
+            "ligand": {"id": chr(ord("A") + len(seqs)), "ccdCodes": ccd_codes}
         })
         if bond_pairs:
             payload["bondedAtomPairs"] = bond_pairs
@@ -156,6 +157,8 @@ def run_af3(base_path: Path, input_dir: Path, output_root: Path, cuda_visible_de
     cmd = [
         "docker", "run", "-it",
         "--gpus", f"device={cuda_visible_devices}",
+        "-e", "XLA_PYTHON_CLIENT_PREALLOCATE=false",
+        "-e", "XLA_PYTHON_CLIENT_ALLOCATOR=platform",
         "--volume", f"{base_path}:/work",
         "--volume", f"{AF3_MODELS}:/root/models",
         "--volume", f"{AF3_DATABASES}:/root/public_databases",
@@ -199,7 +202,7 @@ def main():
             shutil.copy(ligand_cif, args.json_dump_path / ligand_cif.name)
 
     for ligandmpnn_dir in sorted(p for p in args.rfd3_output_root.glob(args.wildcard) if p.is_dir()):
-        print(f"Checking directory {ligandmpnn_dir.name}")
+        # print(f"Checking directory {ligandmpnn_dir.name}")
         seq_dir = ligandmpnn_dir / "seqs"
         fa_files = list(seq_dir.glob("*.fa"))
         if not fa_files:
@@ -229,16 +232,16 @@ def main():
                             if line.startswith("_chem_comp.id"):
                                 ccd_codes.append(line.strip("\n").strip(" ").split(" ")[-1])
             
-                    af3_output_dir = args.af3_output_root / f"{ligandmpnn_dir.name}_id_{id}_holo_{ligand_cif.stem}"
+                    af3_output_dir = args.af3_output_root / f"{ligandmpnn_dir.name.replace('+', '')}_id_{id}_holo_{ligand_cif.stem.replace('+', '')}"
                     if os.path.isdir(af3_output_dir):
                         if list(af3_output_dir.glob("*_confidences.json")):
                             print(f"[SKIP] AF3 already done: {af3_output_dir.name}")
                         else:
                             shutil.rmtree(af3_output_dir)
                     else:
-                        json_path = args.json_dump_path / f"{ligandmpnn_dir.name}_id_{id}_holo_{ligand_cif.stem}.json"
+                        json_path = args.json_dump_path / f"{ligandmpnn_dir.name.replace('+', '')}_id_{id}_holo_{ligand_cif.stem.replace('+', '')}.json"
                         write_af3_json(
-                            json_path, f"{ligandmpnn_dir.name}_id_{id}_holo_{ligand_cif.stem}", entry["sequence"],
+                            json_path, f"{ligandmpnn_dir.name}_id_{id}_holo_{ligand_cif.stem}", [entry["sequence"]],
                             MODEL_SEEDS, ccd_codes, ligand_cif.name, bond_pairs
                         )
 
@@ -252,7 +255,7 @@ def main():
                 else:
                     json_path = args.json_dump_path / f"{ligandmpnn_dir.name}_id_{id}_apo.json"
                     write_af3_json(
-                        json_path, f"{ligandmpnn_dir.name}_id_{id}_apo", entry["sequence"],
+                        json_path, f"{ligandmpnn_dir.name}_id_{id}_apo", [entry["sequence"]],
                         MODEL_SEEDS
                     )
     run_af3(base_path, args.json_dump_path, args.af3_output_root, args.gpu, NUM_RECYCLES, NUM_SAMPLES)
