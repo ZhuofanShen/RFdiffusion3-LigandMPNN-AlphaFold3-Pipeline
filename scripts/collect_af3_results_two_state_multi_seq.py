@@ -53,7 +53,7 @@ def backbone_plddt_stats(conf_json: dict, atom_names: list):
     return frac_gt90, mean_bb
 
 
-def ligand_mean_plddt(conf_json: dict):
+def ligand_mean_plddt_stats(conf_json: dict):
     """
     Mean pLDDT for ligand atoms (chain B)
     """
@@ -310,7 +310,7 @@ def main():
     ap.add_argument("--ipae_min_cut", type=float, default=1.30)
     ap.add_argument("--max_disorder", type=float, default=0.1)
     ap.add_argument("-n", "--n_sequences", type=int, default=20)
-    # ap.add_argument("-rfd3o", "--rfd3_output_roots", type=Path)
+    ap.add_argument("-rfd3o", "--rfd3_output_roots", type=Path)
     ap.add_argument("-o", "--analysis_output_root", type=Path, default="outputs/AlphaFold3_analysis")
     ap.add_argument("--no_copy_pdb", action="store_true")
     args = ap.parse_args()
@@ -333,10 +333,14 @@ def main():
                 output_folder = new_output_root / Path("folded_" + str(i))
             output_folder.mkdir(parents=True, exist_ok=True)
 
+        if args.rfd3_output_roots:
+            rfd3_output_roots = args.rfd3_output_roots
+        else:
+            rfd3_output_roots = af3_output_root.with_name(af3_output_root.name[:af3_output_root.name.rfind("_AlphaFold3")])
+
         for model_0_dir in sorted(af3_output_root.glob(args.wildcard + "_id_0_apo")):
             best_ipae_list = [args.mean_ipae_cut] * args.n_sequences
             best_ipae_holo_model_dirs = [None] * args.n_sequences
-            rfd3_output_roots = af3_output_root.with_name(af3_output_root.name[:af3_output_root.name.rfind("_AlphaFold3")])
             rfd3_model_name = model_0_dir.name[:model_0_dir.name.rfind("_id_")]
             rfd3_model_orig_path = rfd3_output_roots / rfd3_model_name / (rfd3_model_name + ".pdb")
             ca_ref, ref_struct = load_ca_atoms(rfd3_model_orig_path)
@@ -376,7 +380,7 @@ def main():
                     holo_metrics = load_mean_plddt_ipae_confidence(holo_conf_json, ligand=True)
                     atom_names = get_atom_names(next(holo_model_x_dir.glob("*.cif")))
                     holo_frac_gt90, holo_mean_bb = backbone_plddt_stats(holo_conf_json, atom_names)
-                    covalent_ligand_mean_plddt = ligand_mean_plddt(holo_conf_json)
+                    ligand_mean_plddt = ligand_mean_plddt_stats(holo_conf_json)
                     holo_sum_conf = next(holo_model_x_dir.glob("*_summary_confidences.json"), None)
                     holo_summary_confidences = pass_summary_filters(load_af3_conf(holo_sum_conf),
                                                                 args.ptm_cut,
@@ -389,7 +393,7 @@ def main():
                     apo_mean_plddts.append(apo_metrics["mean_plddt"])
                     apo_ptms.append(apo_summary_confidences["ptm"])
                     holo_mean_plddts.append(holo_metrics["mean_plddt"])
-                    ligand_mean_plddts.append(covalent_ligand_mean_plddt)
+                    ligand_mean_plddts.append(ligand_mean_plddt)
                     holo_ptms.append(holo_summary_confidences["ptm"])
                     mean_ipaes.append(holo_metrics["mean_ipae"])
                     ipae_min_vals.append(holo_summary_confidences["ipae_min"])
@@ -426,13 +430,13 @@ def main():
                     #     print(True)
                     # else:
                     #     print(False)
-                    # print("covalent_ligand_mean_plddt")
-                    # print(covalent_ligand_mean_plddt)
-                    # if covalent_ligand_mean_plddt > args.ligand_mean_plddt_cut:
+                    # print("ligand_mean_plddt")
+                    # print(ligand_mean_plddt)
+                    # if ligand_mean_plddt > args.ligand_mean_plddt_cut:
                     #     print(True)
                     # else:
                     #     print(False)
-                    # print("covalent_ligand_mean_ipae")
+                    # print("ligand_mean_ipae")
                     # print(holo_metrics["mean_ipae"])
                     # if holo_metrics["mean_ipae"] < args.mean_ipae_cut:
                     #     print(True)
@@ -459,7 +463,7 @@ def main():
                             holo_summary_confidences["ptm"] > args.ptm_cut and \
                             holo_summary_confidences["iptm"] > args.iptm_cut and \
                             holo_frac_gt90 > args.plddt_frac_gt90_cut and \
-                            covalent_ligand_mean_plddt > args.ligand_mean_plddt_cut and \
+                            ligand_mean_plddt > args.ligand_mean_plddt_cut and \
                             holo_metrics["mean_plddt"] > args.mean_plddt_cut and \
                             holo_metrics["mean_ipae"] < args.mean_ipae_cut and \
                             holo_summary_confidences["ipae_min"] < args.ipae_min_cut:
@@ -482,7 +486,7 @@ def main():
                 #     if holo_summary_confidences["pass"] and \
                 #             holo_summary_confidences["iptm"] > best_iptm and \
                 #             holo_frac_gt90 > args.plddt_frac_gt90_cut and \
-                #             covalent_ligand_mean_plddt > args.ligand_mean_plddt_cut and \
+                #             ligand_mean_plddt > args.ligand_mean_plddt_cut and \
                 #             holo_metrics["mean_plddt"] > args.mean_plddt_cut and \
                 #             holo_metrics["mean_ipae"] < args.mean_ipae_cut and \
                 #             holo_summary_confidences["ipae_min"] < args.ipae_min_cut:
@@ -502,8 +506,8 @@ def main():
                 with open(args.analysis_output_root / "results.log", "a") as pf:
                     pf.write(f"Best iPAE = {ipae:.2f} → {model_dir}\n")
 
-                best_model_dir = model_dir.with_name(model_dir.name[:model_dir.name.rfind("holo")] + "apo")
-                apo_cif = next(best_model_dir.glob("*.cif"))
+                best_apo_model_dir = model_dir.with_name(model_dir.name[:model_dir.name.rfind("holo")] + "apo")
+                apo_cif = next(best_apo_model_dir.glob("*.cif"))
                 ca_mob, mob_struct = load_ca_atoms(apo_cif)
                 # if args.no_copy_pdb or not args.no_copy_pdb and not apo_cif.name in folded_designs:
                 #     print(apo_cif)
