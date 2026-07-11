@@ -11,14 +11,14 @@ import shutil
 
 # ================= USER CONFIG =================
 
-MODEL_SEEDS = [2]
+MODEL_SEEDS = [42]
 TOP_K = None
 NUM_RECYCLES=1
 NUM_SAMPLES=1
 RUN_HOLO = True
 RUN_APO = True
 
-AF3_IMAGE = "alphafold3:modified"
+AF3_IMAGE = "alphafold3"
 AF3_MODELS = "/opt/alphafold3_weights"
 AF3_DATABASES = "/home/public_databases"
 
@@ -154,9 +154,10 @@ def run_af3(base_path: Path, input_dir: Path, output_root: Path, cuda_visible_de
     json_in = Path("/work") / input_dir.relative_to(base_path)
     out_in = Path("/work") / output_root.relative_to(base_path)
 
+    cuda_visible_devices_settings = "all" if cuda_visible_devices == "all" else f"device={cuda_visible_devices}"
     cmd = [
         "docker", "run", "-it",
-        "--gpus", f"device={cuda_visible_devices}",
+        "--gpus", cuda_visible_devices_settings,
         "-e", "XLA_PYTHON_CLIENT_PREALLOCATE=false",
         "-e", "XLA_PYTHON_CLIENT_ALLOCATOR=platform",
         "--volume", f"{base_path}:/work",
@@ -172,7 +173,7 @@ def run_af3(base_path: Path, input_dir: Path, output_root: Path, cuda_visible_de
         "--num_diffusion_samples", str(num_samples)
     ]
     print(" ".join(cmd))
-    # subprocess.check_call(cmd)
+    subprocess.check_call(cmd)
 
 
 # ---------- main ----------
@@ -186,7 +187,7 @@ def main():
     ap.add_argument("-l", "--ligand_cifs", type=Path, nargs="*")
     ap.add_argument("-b", "--bond_pairs", type=str, nargs="*", \
                     help="i.e., A63,SG B1,CD A152,NZ B1,CZ")
-    ap.add_argument("--gpu", type=str, default="0")
+    ap.add_argument("--gpu", type=str, default="all")
     args = ap.parse_args()
 
     base_path = args.json_dump_path.parent.parent
